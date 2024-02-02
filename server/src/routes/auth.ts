@@ -1,9 +1,9 @@
 import express from 'express'
 import { body, validationResult } from 'express-validator'
-import User from '../../models/user'
+import User from '../models/user'
 import bcrypt from 'bcryptjs'
 import JWT from 'jsonwebtoken'
-import { checkAuth } from '../../middleware/checkAuth'
+import { checkAuth } from '../middleware/checkAuth'
 
 const router = express.Router()
 
