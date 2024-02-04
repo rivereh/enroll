@@ -23,7 +23,7 @@ const NavbarComponent = () => {
       className='bg-body-tertiary'
     >
       <Container>
-        <Link className='navbar-brand' d-inline-block align-top to='/'>
+        <Link className='navbar-brand d-inline-block align-top' to='/'>
           <img
             src='logo.webp'
             width='188'
@@ -43,7 +43,9 @@ const NavbarComponent = () => {
         <Navbar.Collapse id='responsive-navbar-nav'>
           <Nav className='me-auto'>
             <Nav.Link href='#features'>About</Nav.Link>
-            <Nav.Link href='#pricing'>Pricing</Nav.Link>
+            <Link className='nav-link' to='/plans'>
+              Pricing
+            </Link>
           </Nav>
           {state.data && (
             <Nav>
