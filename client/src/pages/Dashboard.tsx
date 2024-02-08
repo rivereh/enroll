@@ -43,10 +43,10 @@ const Dashboard = () => {
 
   return (
     <DashComponent>
-      <h4>Welcome,</h4>
+      <h4>Hello, {state.data?.firstName}</h4>
       {/* <p>You are logged in as: {state.data?.email}</p> */}
       <h5 className='fnt'>
-        Current Subscription Status: {subscribed ? 'active' : 'inactive'}
+        Subscription Status: {subscribed ? 'Active' : 'Inactive'}
       </h5>
       <Button variant='primary' href='http://localhost:5173/plans'>
         Manage Subscription

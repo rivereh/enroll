@@ -18,6 +18,9 @@ const ErrorMessage = styled.p`
 const ModalComponent = ({ text, variant, isSignupFlow }: ModalProps) => {
   const [show, setShow] = useState(false)
   const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+
   const [password, setPassword] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -35,6 +38,8 @@ const ModalComponent = ({ text, variant, isSignupFlow }: ModalProps) => {
       const { data: signUpData } = await axios.post(
         'http://localhost:8000/auth/signup',
         {
+          firstName,
+          lastName,
           email,
           password,
         }
@@ -60,6 +65,8 @@ const ModalComponent = ({ text, variant, isSignupFlow }: ModalProps) => {
     setState({
       data: {
         id: response.data.user.id,
+        firstName: response.data.user.firstName,
+        lastName: response.data.user.lastName,
         email: response.data.user.email,
         customerStripeId: response.data.user.customerStripeId,
         subscribed: response.data.user.subscribed,
@@ -90,8 +97,37 @@ const ModalComponent = ({ text, variant, isSignupFlow }: ModalProps) => {
           <Modal.Title>{text}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {isSignupFlow && (
+            <>
+              <InputGroup className='mb-3'>
+                <InputGroup.Text>First Name</InputGroup.Text>
+                <FormControl
+                  type='text'
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </InputGroup>
+              <InputGroup className='mb-3'>
+                <InputGroup.Text>Last Name</InputGroup.Text>
+                <FormControl
+                  type='text'
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </InputGroup>
+            </>
+            // <InputGroup className='mb-3'>
+            //   <InputGroup.Text>Full Name</InputGroup.Text>
+            //   <FormControl
+            //     type='text'
+            //     value={fullName}
+            //     onChange={(e) => setFullName(e.target.value)}
+            //   />
+            // </InputGroup>
+          )}
+
           <InputGroup className='mb-3'>
-            <InputGroup.Text>{text}</InputGroup.Text>
+            <InputGroup.Text>Email</InputGroup.Text>
             <FormControl
               type='email'
               value={email}

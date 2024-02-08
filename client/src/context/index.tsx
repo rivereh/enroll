@@ -4,6 +4,8 @@ import axios from 'axios'
 interface User {
   data: {
     id: string
+    firstName: string
+    lastName: string
     email: string
     customerStripeId: string
     subscribed: boolean
@@ -35,6 +37,8 @@ const UserProvider = ({ children }: any) => {
       setUser({
         data: {
           id: response.data.user.id,
+          firstName: response.data.user.firstName,
+          lastName: response.data.user.lastName,
           email: response.data.user.email,
           customerStripeId: response.data.user.customerStripeId,
           subscribed: response.data.user.subscribed,

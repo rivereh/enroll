@@ -93,7 +93,7 @@ const Plans = () => {
       'http://localhost:8000/subs/cancel'
     )
     console.log(response)
-    location.reload()
+    window.location.href = 'http://localhost:5173/dash'
   }
 
   return (

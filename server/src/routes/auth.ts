@@ -11,6 +11,16 @@ const router = express.Router()
 
 router.post(
   '/signup',
+  body('firstName')
+    .isLength({ min: 3 })
+    .withMessage('Name must be of 3 characters long.')
+    .isAlpha()
+    .withMessage('First name contains invalid characters'),
+  body('lastName')
+    .isLength({ min: 3 })
+    .withMessage('Name must be of 3 characters long.')
+    .isAlpha()
+    .withMessage('Last name contains invalid characters'),
   body('email').isEmail().withMessage('Email is inavlid'),
   body('password').isLength({ min: 5 }).withMessage('Password is too short'),
   async (req, res) => {
@@ -26,7 +36,7 @@ router.post(
       return res.json({ errors, data: null })
     }
 
-    const { email, password } = req.body
+    const { firstName, lastName, email, password } = req.body
 
     const user = await User.findOne({ email })
 
@@ -45,6 +55,7 @@ router.post(
 
     const customer = await stripe.customers.create(
       {
+        name: firstName + ' ' + lastName,
         email,
       },
       {
@@ -53,6 +64,8 @@ router.post(
     )
 
     const newUser = await User.create({
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
       customerStripeId: customer.id,
@@ -74,6 +87,8 @@ router.post(
         token,
         user: {
           id: newUser._id,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
           email: newUser.email,
           customerStripeId: customer.id,
         },
@@ -148,21 +163,6 @@ router.get('/sub', checkAuth, async (req, res) => {
   return res.json(subscribed)
 })
 
-router.get('/subs', checkAuth, async (req, res) => {
-  const user = await User.findOne({ email: req.user })
-
-  const subscription = await stripe.subscriptions.list(
-    {
-      customer: user?.customerStripeId,
-      status: 'all',
-      expand: ['data.default_payment_method'],
-    },
-    { apiKey: process.env.STRIPE_SECRET_KEY }
-  )
-
-  return res.json(subscription)
-})
-
 router.get('/me', checkAuth, async (req, res) => {
   const user = await User.findOne({ email: req.user })
 
@@ -182,6 +182,8 @@ router.get('/me', checkAuth, async (req, res) => {
     data: {
       user: {
         id: user?._id,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
         email: user?.email,
         customerStripeId: user?.customerStripeId,
         subscribed: subscribed,
