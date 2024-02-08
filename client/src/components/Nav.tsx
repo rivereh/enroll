@@ -1,4 +1,11 @@
-import { Navbar, Nav, NavItem, NavLink, Container } from 'react-bootstrap'
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  NavLink,
+  Container,
+  Button,
+} from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { UserContext } from '../context'
@@ -21,6 +28,7 @@ const NavbarComponent = () => {
       collapseOnSelect
       expand='sm'
       className='bg-body-tertiary'
+      style={{ padding: '0.3rem 0.5rem' }}
     >
       <Container>
         <Link className='navbar-brand d-inline-block align-top' to='/'>
@@ -39,7 +47,7 @@ const NavbarComponent = () => {
             className='d-inline-block align-top'
           />
         </Navbar.Brand> */}
-        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+        {/* <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse id='responsive-navbar-nav'>
           <Nav className='me-auto'>
             <Nav.Link href='#features'>About</Nav.Link>
@@ -56,7 +64,20 @@ const NavbarComponent = () => {
               )}
             </Nav>
           )}
-        </Navbar.Collapse>
+        </Navbar.Collapse> */}
+        {state.data && (
+          <Nav>
+            {localStorage.getItem('token') && (
+              // <Nav.Link className='nav-link' onClick={handleLogout}>
+              //   Logout
+              //   {/* {state.data.email} */}
+              // </Nav.Link>
+              <Button variant='dark' onClick={handleLogout}>
+                Logout
+              </Button>
+            )}
+          </Nav>
+        )}
       </Container>
     </Navbar>
   )

@@ -62,6 +62,7 @@ const ModalComponent = ({ text, variant, isSignupFlow }: ModalProps) => {
         id: response.data.user.id,
         email: response.data.user.email,
         customerStripeId: response.data.user.customerStripeId,
+        subscribed: response.data.user.subscribed,
       },
       loading: false,
       error: null,
@@ -80,7 +81,7 @@ const ModalComponent = ({ text, variant, isSignupFlow }: ModalProps) => {
         onClick={handleShow}
         variant={variant}
         size='lg'
-        style={{ marginRight: '1rem', padding: '0.5rem 3rem' }}
+        style={{ padding: '0.5rem 3rem' }}
       >
         {text}
       </Button>

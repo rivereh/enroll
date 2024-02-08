@@ -1,10 +1,11 @@
 import express from 'express'
-import { body, validationResult } from 'express-validator'
+import { body, check, validationResult } from 'express-validator'
 import User from '../models/user'
 import bcrypt from 'bcryptjs'
 import JWT from 'jsonwebtoken'
 import { checkAuth } from '../middleware/checkAuth'
 import { stripe } from '../utils/stripe'
+import { subscribe } from 'diagnostics_channel'
 
 const router = express.Router()
 
@@ -132,8 +133,49 @@ router.post('/login', async (req, res) => {
   })
 })
 
+router.get('/sub', checkAuth, async (req, res) => {
+  const user = await User.findOne({ email: req.user })
+
+  const subscription = await stripe.subscriptions.list(
+    {
+      customer: user?.customerStripeId,
+      expand: ['data.default_payment_method'],
+    },
+    { apiKey: process.env.STRIPE_SECRET_KEY }
+  )
+
+  const subscribed = subscription.data.length > 0
+  return res.json(subscribed)
+})
+
+router.get('/subs', checkAuth, async (req, res) => {
+  const user = await User.findOne({ email: req.user })
+
+  const subscription = await stripe.subscriptions.list(
+    {
+      customer: user?.customerStripeId,
+      status: 'all',
+      expand: ['data.default_payment_method'],
+    },
+    { apiKey: process.env.STRIPE_SECRET_KEY }
+  )
+
+  return res.json(subscription)
+})
+
 router.get('/me', checkAuth, async (req, res) => {
   const user = await User.findOne({ email: req.user })
+
+  const subscription = await stripe.subscriptions.list(
+    {
+      customer: user?.customerStripeId,
+      status: 'all',
+      expand: ['data.default_payment_method'],
+    },
+    { apiKey: process.env.STRIPE_SECRET_KEY }
+  )
+
+  const subscribed = subscription.data.length > 0
 
   return res.json({
     errors: [],
@@ -142,6 +184,7 @@ router.get('/me', checkAuth, async (req, res) => {
         id: user?._id,
         email: user?.email,
         customerStripeId: user?.customerStripeId,
+        subscribed: subscribed,
       },
     },
   })

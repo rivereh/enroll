@@ -3,13 +3,18 @@ import { useEffect, useState } from 'react'
 import { Container } from 'react-bootstrap'
 import styled from 'styled-components'
 import { Card, Button } from 'react-bootstrap'
+import { UserContext } from '../context'
 
 const CardsContainer = styled.div`
   display: flex;
-  height: 75vh;
+  height: 100vh;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 2rem;
+  /* justify-content: center; */
+  /* gap: 2rem; */
+  padding-top: 1.5rem;
+  gap: 20px;
+  background-color: rgb(53, 53, 53);
 `
 const CardHeader = styled.div`
   width: 15rem;
@@ -46,17 +51,25 @@ const PriceSubText = styled.p`
 
 const Plans = () => {
   const [prices, setPrices] = useState<any[]>([])
+  const [subscribed, setSubscribed] = useState('')
 
   useEffect(() => {
     fetchPrices()
+    getSubscription()
   }, [])
+
+  const getSubscription = async () => {
+    const { data: response } = await axios.get('http://localhost:8000/auth/sub')
+    setSubscribed(response)
+    console.log(response)
+  }
 
   const fetchPrices = async () => {
     const { data: response } = await axios.get(
       'http://localhost:8000/subs/prices'
     )
     setPrices(response.data)
-    console.log(response.data.reverse())
+    console.log(response.data)
   }
 
   const createSession = async (priceId: string) => {
@@ -72,50 +85,76 @@ const Plans = () => {
 
   const backgroundColors: any = {
     'Drop-in Class': 'rgb(77, 77, 77)',
-    'Monthly Subscription': 'rgba(185, 42, 23, 0.8)',
+    'Monthly Subscription': 'rgb(39, 69, 83)',
+  }
+
+  const handleUnsubscribe = async () => {
+    const { data: response } = await axios.delete(
+      'http://localhost:8000/subs/cancel'
+    )
+    console.log(response)
+    location.reload()
   }
 
   return (
-    <Container>
-      <CardsContainer>
-        {prices.map((price: any) => {
-          return (
-            <Card key={price.id}>
-              <CardHeader
-                style={{ backgroundColor: backgroundColors[price.nickname] }}
-              >
-                <PriceCircle>
-                  <PriceText>
-                    ${price.unit_amount / 100}
-                    {price.type == 'recurring' && (
-                      <PriceSubText>Monthly</PriceSubText>
-                    )}
-                  </PriceText>
-                </PriceCircle>
-              </CardHeader>
-              <Card.Body
+    <>
+      {!subscribed && (
+        <CardsContainer>
+          {prices.map((price: any) => {
+            return (
+              <Card
+                key={price.id}
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '0.5rem',
+                  height: '350px',
+                  backgroundColor: 'rgb(83, 83, 83)',
+                  color: 'white',
+                  border: '2px solid rgb(80, 80, 80)',
                 }}
               >
-                <Card.Title style={{ fontSize: '1.2rem' }}>
-                  {price.nickname}
-                </Card.Title>
-                <Button
-                  variant='primary'
-                  onClick={() => createSession(price.id)}
+                <CardHeader
+                  style={{ backgroundColor: backgroundColors[price.nickname] }}
                 >
-                  Purchase
-                </Button>
-              </Card.Body>
-            </Card>
-          )
-        })}
-      </CardsContainer>
-    </Container>
+                  <PriceCircle>
+                    <PriceText>
+                      ${price.unit_amount / 100}
+                      {price.type == 'recurring' && (
+                        <PriceSubText>Monthly</PriceSubText>
+                      )}
+                    </PriceText>
+                  </PriceCircle>
+                </CardHeader>
+                <Card.Body
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                  }}
+                >
+                  <Card.Title style={{ fontSize: '1.2rem' }}>
+                    {price.nickname}
+                  </Card.Title>
+                  <Button
+                    variant='primary'
+                    onClick={() => createSession(price.id)}
+                    style={{ width: '100%' }}
+                  >
+                    Purchase
+                  </Button>
+                </Card.Body>
+              </Card>
+            )
+          })}
+        </CardsContainer>
+      )}
+      {subscribed && (
+        <CardsContainer>
+          <Button style={{ height: '2.5rem' }} onClick={handleUnsubscribe}>
+            Unsubscribe
+          </Button>
+        </CardsContainer>
+      )}
+    </>
   )
 }
 export default Plans

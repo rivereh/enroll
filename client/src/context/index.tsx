@@ -6,6 +6,7 @@ interface User {
     id: string
     email: string
     customerStripeId: string
+    subscribed: boolean
   } | null
   error: string | null
   loading: boolean
@@ -36,6 +37,7 @@ const UserProvider = ({ children }: any) => {
           id: response.data.user.id,
           email: response.data.user.email,
           customerStripeId: response.data.user.customerStripeId,
+          subscribed: response.data.user.subscribed,
         },
         loading: false,
         error: null,

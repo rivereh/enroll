@@ -1,20 +1,22 @@
 import styled from 'styled-components'
-import { Container } from 'react-bootstrap'
+import { Container, Stack, Button } from 'react-bootstrap'
 import ModalComponent from './Modal'
 
 const HeroComponent = styled.header`
-  padding: 5rem 0;
-  height: 60vh;
-  background: url('https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  /* padding: 5rem 0; */
+  height: 10rem;
+  background: url('/hero2.webp');
+  background-color: rgb(53, 53, 53);
   background-size: cover;
-  /* background-position: center; */
+  background-position: center;
 `
 
 const HeaderContainer = styled.div`
-  background-color: rgb(5, 148, 112);
-  padding: 3rem;
+  background-color: rgb(53, 53, 53);
+  height: 100vh;
+  padding: 1rem 1rem;
   color: white;
-  width: 32.5rem;
+  /* width: 32.5rem; */
 `
 
 const Heading = styled.h1`
@@ -28,20 +30,33 @@ const SubHeading = styled.h3`
 
 const Hero = () => {
   return (
-    <HeroComponent>
-      <Container>
-        <HeaderContainer>
-          <Heading>Zumba</Heading>
-          <SubHeading>Workout while having fun with Zumba!</SubHeading>
+    <>
+      {/* <Container> */}
+      {/* <Stack gap={10}> */}
+      <HeroComponent></HeroComponent>
+      <HeaderContainer>
+        <Stack gap={3}>
+          <Button
+            variant='primary'
+            size='lg'
+            style={{ padding: '0.5rem 3rem', cursor: 'pointer' }}
+            href='https://buy.stripe.com/test_7sI8ynaOg72K5tC144'
+          >
+            Buy Drop-in Class - $12
+          </Button>
+          {/* <Heading>Zumba</Heading> */}
+          {/* <SubHeading>Workout while having fun with Zumba!</SubHeading> */}
           <ModalComponent text='Signup' variant='primary' isSignupFlow={true} />
           <ModalComponent
             text='Login'
             variant='secondary'
             isSignupFlow={false}
           />
-        </HeaderContainer>
-      </Container>
-    </HeroComponent>
+        </Stack>
+      </HeaderContainer>
+      {/* </Container> */}
+      {/* </Stack> */}
+    </>
   )
 }
 export default Hero
