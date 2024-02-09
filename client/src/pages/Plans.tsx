@@ -134,13 +134,24 @@ const Plans = () => {
                   <Card.Title style={{ fontSize: '1.2rem' }}>
                     {price.nickname}
                   </Card.Title>
-                  <Button
-                    variant='primary'
-                    onClick={() => createSession(price.id)}
-                    style={{ width: '100%' }}
-                  >
-                    Purchase
-                  </Button>
+                  {price.type == 'recurring' && (
+                    <Button
+                      variant='primary'
+                      onClick={() => createSession(price.id)}
+                      style={{ width: '100%' }}
+                    >
+                      Purchase
+                    </Button>
+                  )}
+                  {price.type != 'recurring' && (
+                    <Button
+                      variant='primary'
+                      href='https://buy.stripe.com/test_7sI8ynaOg72K5tC144'
+                      style={{ width: '100%' }}
+                    >
+                      Purchase
+                    </Button>
+                  )}
                 </Card.Body>
               </Card>
             )

@@ -3,15 +3,16 @@ import styled from 'styled-components'
 import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../context'
 import axios from 'axios'
+import Footer from '../components/Footer'
 
 const DashComponent = styled.div`
-  height: 100vh;
+  /* height: 100vh; */
   background-color: rgb(53, 53, 53);
   display: flex;
   flex-direction: column;
   gap: 1rem;
   align-items: center;
-  padding-top: 6rem;
+  padding-top: 3rem;
   /* justify-content: center; */
   color: white;
 `
@@ -42,16 +43,20 @@ const Dashboard = () => {
   }
 
   return (
-    <DashComponent>
-      <h4>Hello, {state.data?.firstName}</h4>
-      {/* <p>You are logged in as: {state.data?.email}</p> */}
-      <h5 className='fnt'>
-        Subscription Status: {subscribed ? 'Active' : 'Inactive'}
-      </h5>
-      <Button variant='primary' href='http://localhost:5173/plans'>
-        Manage Subscription
-      </Button>
-    </DashComponent>
+    <>
+      <DashComponent>
+        {state && <h4>Hello, {state.data?.firstName}</h4>}
+
+        {/* <p>You are logged in as: {state.data?.email}</p> */}
+        <h5 className='fnt'>
+          Subscription Status: {subscribed ? 'Active' : 'Inactive'}
+        </h5>
+        <Button variant='primary' href='http://localhost:5173/plans'>
+          Manage Subscription
+        </Button>
+      </DashComponent>
+      <Footer />
+    </>
   )
 }
 

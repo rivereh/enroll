@@ -8,6 +8,8 @@ import Plans from './pages/Plans'
 import { QRCodeSVG } from 'qrcode.react'
 import { UserContext } from './context'
 import { useContext } from 'react'
+import Header from './components/Header'
+import Footer from './components/Footer'
 
 function App() {
   const [state, setState] = useContext(UserContext)
@@ -16,6 +18,7 @@ function App() {
     <BrowserRouter>
       {/* <QRCodeSVG value='http://idazumba.com/' />, */}
       <Navbar />
+      {/* <Header /> */}
       <Routes>
         <Route
           path='/'
@@ -28,6 +31,7 @@ function App() {
           <Route path='/plans' element={<Plans />}></Route>
         </Route>
       </Routes>
+      {/* <Footer /> */}
     </BrowserRouter>
   )
 }
