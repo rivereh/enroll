@@ -1,25 +1,13 @@
 import { createContext, useEffect, useState } from 'react'
 import axios from 'axios'
 
-interface User {
-  data: {
-    id: string
-    firstName: string
-    lastName: string
-    email: string
-    customerStripeId: string
-    subscribed: boolean
-  } | null
-  error: string | null
-  loading: boolean
-}
+const UserContext = createContext([
+  { data: null, loading: true, error: null },
+  () => {},
+])
 
-const UserContext = createContext<
-  [User, React.Dispatch<React.SetStateAction<User>>]
->([{ data: null, loading: true, error: null }, () => {}])
-
-const UserProvider = ({ children }: any) => {
-  const [user, setUser] = useState<User>({
+const UserProvider = ({ children }) => {
+  const [user, setUser] = useState({
     data: null,
     loading: true,
     error: null,

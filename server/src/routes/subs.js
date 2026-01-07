@@ -1,7 +1,7 @@
 import express from 'express'
-import User from '../models/user'
-import { checkAuth } from '../middleware/checkAuth'
-import { stripe } from '../utils/stripe'
+import User from '../models/user.js'
+import { checkAuth } from '../middleware/checkAuth.js'
+import { stripe } from '../utils/stripe.js'
 
 const router = express.Router()
 

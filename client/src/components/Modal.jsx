@@ -5,17 +5,11 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context'
 
-interface ModalProps {
-  text: string
-  variant: 'primary' | 'secondary' | 'danger'
-  isSignupFlow: boolean
-}
-
 const ErrorMessage = styled.p`
   color: red;
 `
 
-const ModalComponent = ({ text, variant, isSignupFlow }: ModalProps) => {
+const ModalComponent = ({ text, variant, isSignupFlow }) => {
   const [show, setShow] = useState(false)
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')

@@ -50,7 +50,7 @@ const PriceSubText = styled.p`
 `
 
 const Plans = () => {
-  const [prices, setPrices] = useState<any[]>([])
+  const [prices, setPrices] = useState([])
   const [subscribed, setSubscribed] = useState('')
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const Plans = () => {
     console.log(response.data)
   }
 
-  const createSession = async (priceId: string) => {
+  const createSession = async (priceId) => {
     const { data: response } = await axios.post(
       'http://localhost:8000/subs/session',
       {
@@ -83,7 +83,7 @@ const Plans = () => {
     window.location.href = response.url
   }
 
-  const backgroundColors: any = {
+  const backgroundColors = {
     'Drop-in Class': 'rgb(77, 77, 77)',
     'Monthly Subscription': 'rgb(39, 69, 83)',
   }
@@ -100,7 +100,7 @@ const Plans = () => {
     <>
       {!subscribed && (
         <CardsContainer>
-          {prices.map((price: any) => {
+          {prices.map((price) => {
             return (
               <Card
                 key={price.id}

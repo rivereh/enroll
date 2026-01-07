@@ -1,11 +1,6 @@
-import { Request, Response, NextFunction } from 'express'
 import JWT from 'jsonwebtoken'
 
-export const checkAuth = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const checkAuth = async (req, res, next) => {
   let token = req.header('authorization')
 
   if (!token) {
@@ -21,10 +16,7 @@ export const checkAuth = async (
   token = token.split(' ')[1]
 
   try {
-    const user = (await JWT.verify(
-      token,
-      process.env.JWT_SECRET as string
-    )) as { email: string }
+    const user = await JWT.verify(token, process.env.JWT_SECRET)
 
     req.user = user.email
     next()

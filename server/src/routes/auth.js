@@ -1,10 +1,10 @@
 import express from 'express'
 import { body, check, validationResult } from 'express-validator'
-import User from '../models/user'
+import User from '../models/user.js'
 import bcrypt from 'bcryptjs'
 import JWT from 'jsonwebtoken'
-import { checkAuth } from '../middleware/checkAuth'
-import { stripe } from '../utils/stripe'
+import { checkAuth } from '../middleware/checkAuth.js'
+import { stripe } from '../utils/stripe.js'
 import { subscribe } from 'diagnostics_channel'
 
 const router = express.Router()
@@ -75,7 +75,7 @@ router.post(
       {
         email: newUser.email,
       },
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET,
       {
         expiresIn: 360000,
       }
@@ -130,7 +130,7 @@ router.post('/login', async (req, res) => {
     {
       email: user.email,
     },
-    process.env.JWT_SECRET as string,
+    process.env.JWT_SECRET,
     {
       expiresIn: 360000,
     }
